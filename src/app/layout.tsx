@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import GitHubLoginButton from "@/components/github-login";
+import Link from "next/link";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +19,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <header className="flex items-center justify-between max-w-6xl mx-auto">
+          <Link href="/">Acme</Link>
+
+          <nav>
+            <ul className="flex items-center gap-5">
+              <li className="ml-5">
+                <GitHubLoginButton />
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        <main className="max-w-6xl mx-auto">{children}</main>
+      </body>
     </html>
   );
 }
