@@ -1,8 +1,30 @@
 "use client";
 
-import { signInWithGithub } from "@/actions/github-login";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function GitHubLoginButton() {
+  const router = useRouter();
+  async function signInWithGithub() {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: process.env.NEXT_PUBLIC_SUPABASE_AUTH_CALLBACK,
+        scopes: "read:user",
+      },
+    });
+
+    if (error) {
+      router.push("/error");
+    }
+
+    if (data.url) {
+      router.push(data.url);
+    }
+  }
+
   return (
     <button
       id="login"
